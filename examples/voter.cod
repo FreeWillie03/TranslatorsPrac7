@@ -1,0 +1,88 @@
+ASSEM
+BEGIN
+  {    0 } FHDR    
+  {    1 } CALL     4
+  {    3 } HALT    
+  {    4 } DSP      6
+  {    6 } LDA      5
+  {    8 } LDC      0
+  {   10 } STO     
+  {   11 } LDA      6
+  {   13 } LDC      0
+  {   15 } STO     
+  {   16 } LDA      7
+  {   18 } LDC      1
+  {   20 } STO     
+  {   21 } LDA      8
+  {   23 } LDC      100
+  {   25 } ANEW    
+  {   26 } STO     
+  {   27 } LDA      4
+  {   29 } INPI    
+  {   30 } LDC      1
+  {   32 } BZE      106
+  {   34 } LDA      9
+  {   36 } LDC      0
+  {   38 } STO     
+  {   39 } LDA      7
+  {   41 } LDA      7
+  {   43 } LDV     
+  {   44 } BFALSE   49
+  {   46 } LDA      9
+  {   48 } LDV     
+  {   49 } STO     
+  {   50 } LDA      9
+  {   52 } LDV     
+  {   53 } BZE      101
+  {   55 } LDA      8
+  {   57 } LDV     
+  {   58 } LDA      5
+  {   60 } LDV     
+  {   61 } LDXA    
+  {   62 } LDA      4
+  {   64 } LDV     
+  {   65 } STO     
+  {   66 } LDA      5
+  {   68 } LDA      5
+  {   70 } LDV     
+  {   71 } LDC      1
+  {   73 } ADD     
+  {   74 } STO     
+  {   75 } LDA      6
+  {   77 } LDA      6
+  {   79 } LDV     
+  {   80 } LDA      8
+  {   82 } LDV     
+  {   83 } LDA      5
+  {   85 } LDV     
+  {   86 } LDC      1
+  {   88 } SUB     
+  {   89 } LDXA    
+  {   90 } LDV     
+  {   91 } ADD     
+  {   92 } STO     
+  {   93 } LDA      4
+  {   95 } LDV     
+  {   96 } LDC      5
+  {   98 } CGT     
+  {   99 } BZE      101
+  {  101 } LDA      4
+  {  103 } INPI    
+  {  104 } BRN      30
+  {  106 } LDA      5
+  {  108 } LDV     
+  {  109 } PRNI    
+  {  110 } PRNS     " voters.  Average age is "
+  {  112 } LDA      6
+  {  114 } LDV     
+  {  115 } LDA      5
+  {  117 } LDV     
+  {  118 } DIV     
+  {  119 } PRNI    
+  {  120 } PRNS     "\n"
+  {  122 } LDA      7
+  {  124 } LDV     
+  {  125 } BZE      129
+  {  127 } PRNS     "Everyone was above voting age"
+  {  129 } RETV    
+END.

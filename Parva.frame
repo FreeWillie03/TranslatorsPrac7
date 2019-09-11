@@ -59,6 +59,7 @@ namespace -->namespace {
         else if (args[i].ToLower().Equals("-n")) execution = false;
         else if (args[i].ToLower().Equals("-g")) immediate = true;
 		else if (args[i].ToLower().Equals("-c")) Parser.cod = true ;
+		else if (args[i].ToLower().Equals("-w")) Parser.warnings = false ;
         else inputName = args[i];
       }
       if (inputName == null) {
@@ -85,7 +86,9 @@ namespace -->namespace {
       // ------------------------ compilation
 
       Parser.Parse();
+	  if(Parser.warnings == false) Errors.warns = 0;
       Errors.Summarize();
+	 
 
       // ------------------------ interpretation
 

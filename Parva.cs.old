@@ -31,7 +31,8 @@ namespace Parva {
         else if (args[i].ToLower().Equals("-d")) Parser.debug = true;
         else if (args[i].ToLower().Equals("-n")) execution = false;
         else if (args[i].ToLower().Equals("-g")) immediate = true;
-		//else if (args[i].ToLower().Equals("-c")) Parser.cod = true if ((args[i+1].ToLower().Equals("-1")) mergeErrors = true;
+		else if (args[i].ToLower().Equals("-c")) Parser.cod = true ;
+		else if (args[i].ToLower().Equals("-w")) Parser.warnings = false ;
         else inputName = args[i];
       }
       if (inputName == null) {
@@ -58,7 +59,9 @@ namespace Parva {
       // ------------------------ compilation
 
       Parser.Parse();
+	  if(Parser.warnings == false) Errors.warns = 0;
       Errors.Summarize();
+	 
 
       // ------------------------ interpretation
 

@@ -15,6 +15,7 @@ COMPILER Parva $NC
     warnings = true,
 	cod     = false;
 
+
   const bool
     known = true;
 
@@ -120,6 +121,7 @@ PRAGMAS
   TableDump   = "$ST" .                      (. if(debug) Table.PrintTable(OutFile.StdOut); .)
   codon   	  = "$C+"  .                     (. cod = true; .)
   codoff   	  = "$C-"  .                     (. cod = false; .)
+  warningoff  = "$W-"  .                     (. warnings = false; .)  
 
 COMMENTS FROM "//" TO lf
 COMMENTS FROM "/*" TO "*/"
@@ -194,13 +196,13 @@ PRODUCTIONS
             | ReturnStatement
             | ReadStatement
             | WriteStatement
-            | ";"
+            |  ";"                              //(. if(empty) SemError("empty statement"); .)                
           ) .
 
   Block<StackFrame frame>
-  =                                          (. Table.OpenScope(); .)
-     "{" { Statement<frame> }
-     WEAK "}"                                (. Table.CloseScope(); .)
+ (.bool empty = false; .) =                                          (. Table.OpenScope(); .)
+   (. if (token.val == ";") Warning(" ; unexpected"); .) WEAK "{" { Statement<frame> } (. if (token.val == null) Warning("statement empty"); .)
+     WEAK  "}"                                (. Table.CloseScope(); .)
   .
 
   ConstDeclarations
@@ -313,21 +315,22 @@ PRODUCTIONS
   IfStatement<StackFrame frame>
                                              (. Label falseLabel = new Label(!known); .)
   =  "if" "(" Condition ")"                  (. CodeGen.BranchFalse(falseLabel); .)
-        Statement<frame>           (. falseLabel.Here(); .)
+        Statement<frame>           
+		[ "else" Statement<frame>]            (. falseLabel.Here(); .)
   .
 
 
   WhileStatement<StackFrame frame>
                                              (. Label loopExit  = new Label(!known);
                                                 Label loopStart = new Label(known); .)
-  =  "while" "(" Condition ")"               (. CodeGen.BranchFalse(loopExit); .)
+  =  "while" "(" Condition ")"                (. CodeGen.BranchFalse(loopExit); .)
      Statement<frame>              	     (. CodeGen.Branch(loopStart);
                                                 loopExit.Here(); .)
   .
 
   HaltStatement
- =   "halt"   				(.  CodeGen.LeaveProgram() .)
-	[ stringLit ]            (. CodeGen.WriteString(token.val)  CodeGen.LeaveProgram() .)
+ =   "halt"   				(.  CodeGen.LeaveProgram(); .)
+	[ stringLit (. CodeGen.WriteString(token.val);  CodeGen.LeaveProgram(); .) ]
      WEAK ";"
   .
 
@@ -362,7 +365,7 @@ PRODUCTIONS
   .
 
   WriteStatement
-  = (   "write"     "("   WriteList   ")"
+  = (   "write"     "("   WriteList {["+"] WriteList}   ")"     
       | "writeLine" "(" [ WriteList ] ")"    (. CodeGen.WriteLine(); .)
     )
     WEAK ";"
