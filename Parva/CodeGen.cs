@@ -150,7 +150,7 @@ namespace Parva {
         case Types.boolType: Emit(PVM.prnb); break;
       }
     } // CodeGen.Write
-
+        
     public static void WriteLine() {
     // Generates code to output line mark
       Emit(PVM.prnl);
@@ -275,9 +275,9 @@ namespace Parva {
     } // CodeGen.FunctionTrap
 
     public static void BackPatch(int adr) {
-    // Stores the current location counter as the address field of the branch or call
-    // instruction currently holding a forward reference to adr and repeatedly
-    // works through a linked list of such instructions
+            // Stores the current location counter as the address field of the branch or call
+            // instruction currently holding a forward reference to adr and repeatedly
+            // works through a linked list of such instructions
       while (adr != undefined) {
         int nextAdr = PVM.mem[adr];
         PVM.mem[adr] = codeTop;
