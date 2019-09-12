@@ -1,0 +1,15 @@
+ASSEM
+BEGIN
+  {    0 } FHDR    
+  {    1 } CALL     4
+  {    3 } HALT    
+  {    4 } DSP      0
+  {    6 } LDC      11
+  {    8 } LDC      10
+  {   10 } CGT     
+  {   11 } BZE      17
+  {   13 } PRNS     "yes"
+  {   15 } BRN      19
+  {   17 } PRNS     "no"
+  {   19 } RETV    
+END.

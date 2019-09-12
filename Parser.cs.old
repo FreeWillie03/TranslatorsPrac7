@@ -476,10 +476,10 @@ public class Parser {
 		CodeGen.BranchFalse(falseLabel);
 		Statement(frame);
 		if (la.kind == else_Sym) {
-			falseLabel.Here();
 			Get();
 			Statement(frame);
 		}
+		falseLabel.Here();
 	}
 
 	static void WhileStatement(StackFrame frame) {

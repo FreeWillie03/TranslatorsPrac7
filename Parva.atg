@@ -313,10 +313,10 @@ PRODUCTIONS
   .
 
   IfStatement<StackFrame frame>
-                                             (. Label falseLabel = new Label(!known); .)
+                                             (. Label falseLabel = new Label(!known); Label trueLabel = new Label(!known);.)
   =  "if" "(" Condition ")"                  (. CodeGen.BranchFalse(falseLabel); .)
-        Statement<frame>           
-		[ "else" Statement<frame>]            (. falseLabel.Here(); .)
+        Statement<frame>                      (. CodeGen.Branch(trueLabel);  falseLabel.Here(); .)
+		[ "else" Statement<frame>] 		     (. trueLabel.Here(); .)
   .
 
 

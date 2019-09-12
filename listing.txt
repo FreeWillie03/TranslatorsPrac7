@@ -320,10 +320,10 @@
  313   .
  314 
  315   IfStatement<StackFrame frame>
- 316                                              (. Label falseLabel = new Label(!known); .)
+ 316                                              (. Label falseLabel = new Label(!known); Label trueLabel = new Label(!known);.)
  317   =  "if" "(" Condition ")"                  (. CodeGen.BranchFalse(falseLabel); .)
- 318         Statement<frame>           
- 319 		[ "else" Statement<frame>]            (. falseLabel.Here(); .)
+ 318         Statement<frame>                      (. CodeGen.Branch(trueLabel);  falseLabel.Here(); .)
+ 319 		[ "else" Statement<frame>] 		     (. trueLabel.Here(); .)
  320   .
  321 
  322 

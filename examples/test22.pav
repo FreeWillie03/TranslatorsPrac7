@@ -1,0 +1,6 @@
+void Main () { 
+if(11>10)
+{
+ write("yes");
+} else write("no");
+}

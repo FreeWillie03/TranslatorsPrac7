@@ -3,12 +3,12 @@
    2 // voter.pav
    3 // Simple voter example from book
    4   const votingAge = 18;
-   5   int age, eligible = 0, total = 0;
+   5   int age , eligible = 0, total = 0;
    6   bool allEligible = true;
    7   int[] voters = new int[100];
    8   read(age);
-   9   while (age > 0) {
-  10     bool canVote = age > votingAge;
+   9   while (true) {
+  10     bool canVote = false;
   11     allEligible = allEligible && canVote;
   12     if (canVote) {
   13       voters[eligible] = age;

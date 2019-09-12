@@ -468,18 +468,19 @@ public class Parser {
 	}
 
 	static void IfStatement(StackFrame frame) {
-		Label falseLabel = new Label(!known);
+		Label falseLabel = new Label(!known); Label trueLabel = new Label(!known);
 		Expect(if_Sym);
 		Expect(lparen_Sym);
 		Condition();
 		Expect(rparen_Sym);
 		CodeGen.BranchFalse(falseLabel);
 		Statement(frame);
+		CodeGen.Branch(trueLabel);  falseLabel.Here();
 		if (la.kind == else_Sym) {
 			Get();
 			Statement(frame);
 		}
-		falseLabel.Here();
+		trueLabel.Here();
 	}
 
 	static void WhileStatement(StackFrame frame) {
