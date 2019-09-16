@@ -18,7 +18,6 @@ COMPILER Parva $NC
 
   const bool
     known = true;
-
   // This next method might better be located in the code generator.  Traditionally
   // it has been left in the ATG file, but that might change in future years
   //
@@ -192,11 +191,13 @@ PRODUCTIONS
             | AssignmentOrCall
             | IfStatement<frame>
             | WhileStatement<frame>
+			| DoWhileStatement<frame>
             | HaltStatement
             | ReturnStatement
             | ReadStatement
             | WriteStatement
-            |  ";"                              //(. if(empty) SemError("empty statement"); .)                
+            |  ";"                              //(. if(empty) SemError("empty statement"); .) 
+			| "break" ";"                         (. CodeGen.Branch(LoopExit); .)
           ) .
 
   Block<StackFrame frame>
@@ -324,7 +325,15 @@ PRODUCTIONS
                                              (. Label loopExit  = new Label(!known);
                                                 Label loopStart = new Label(known); .)
   =  "while" "(" Condition ")"                (. CodeGen.BranchFalse(loopExit); .)
-     Statement<frame>              	     (. CodeGen.Branch(loopStart);
+     Statement<frame>              	        (. CodeGen.Branch(loopStart);.)
+                                               (. loopExit.Here(); LoopExit2.here(); .)
+  .
+  
+ DoWhileStatement<StackFrame frame>
+                                             (. Label loopExit  = new Label(!known); 
+											  Label loopStart = new Label(known); .)
+  = "do"  Statement<frame>             
+  "while" "(" Condition ")"                (. CodeGen.BranchFalse(loopExit); CodeGen.Branch(loopStart);              	     
                                                 loopExit.Here(); .)
   .
 

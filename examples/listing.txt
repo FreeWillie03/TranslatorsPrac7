@@ -1,24 +1,15 @@
 
-   1 void Main () {
-   2 // voter.pav
-   3 // Simple voter example from book
-   4   const votingAge = 18;
-   5   int age , eligible = 0, total = 0;
-   6   bool allEligible = true;
-   7   int[] voters = new int[100];
-   8   read(age);
-   9   while (true) {
-  10     bool canVote = false;
-  11     allEligible = allEligible && canVote;
-  12     if (canVote) {
-  13       voters[eligible] = age;
-  14       eligible = eligible + 1;
-  15       total = total + voters[eligible - 1];
-  16     } else if (age > 5) { }
-  17     read(age);
-  18   }
-  19   write(eligible, " voters.  Average age is ", total / eligible, "\n");
-  20   if (allEligible) write("Everyone was above voting age");
-  21 }
+   1 void Main () { $C+
+   2 // break0.pav
+   3 // Simple break statements
+   4   while (true) {
+   5     write(1);
+   6     break;
+****     ^ "}" expected
+   7     write(2);
+   8     break;
+****     ^ "}" expected
+   9   }
+  10 }
 
-0 errors detected
+2 errors detected
