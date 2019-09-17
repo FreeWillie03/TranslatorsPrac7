@@ -552,13 +552,14 @@ public class Parser {
 		CodeGen.Assign(des.type); CodeGen.Branch(loopstart); Label loopback  = new Label(known);
 		while (la.kind == comma_Sym) {
 			Get();
+			CodeGen.LoadAddress(entry); loopstart = new Label(!known);
 			Expression(out expType);
 			if (!Assignable(des.type, expType))
-			SemError("incompatible types in assignment");
-			CodeGen.Assign(des.type);  CodeGen.Branch(loopstart);
+			 SemError("incompatible types in assignment");
+			 CodeGen.Assign(des.type);  CodeGen.Branch(loopstart);
 		}
 		Expect(rparen_Sym);
-		loopstart.Here(); CodeGen.Branch(loopend);
+		CodeGen.Branch(loopend);loopstart.Here();
 		Statement(frame);
 		CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here();
 	}

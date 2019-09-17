@@ -348,13 +348,14 @@ PRODUCTIONS
                                                   CodeGen.LoadAddress(entry); if (des.entry.kind != Kinds.Var)
                                                   SemError("cannot assign to " + Kinds.kindNames[des.entry.kind]); .)
    "in" "(" Expression <out expType>          (. if (!Assignable(des.type, expType))
-                                                SemError("incompatible types in assignment");
-                                                CodeGen.Assign(des.type); CodeGen.Branch(loopstart); Label loopback  = new Label(known);.)
-  { "," Expression <out expType>              (. if (!Assignable(des.type, expType))
+                                                SemError("incompatible types in assignment"); 
+                                                CodeGen.Assign(des.type); CodeGen.Branch(loopstart); Label loopback  = new Label(known); .)
+  { "," (.CodeGen.LoadAddress(entry); loopstart = new Label(!known);.)
+    Expression  <out expType>              (.  if (!Assignable(des.type, expType))
                                                 SemError("incompatible types in assignment");
                                                 CodeGen.Assign(des.type);  CodeGen.Branch(loopstart); .) 
-   } ")"                                        (. loopstart.Here(); CodeGen.Branch(loopend);.)
-   Statement<frame>                             (.CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here(); .)
+   } ")"                                        (.  CodeGen.Branch(loopend);loopstart.Here(); .)
+   Statement<frame>                             (. CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here(); .)
    .                                   
   
   HaltStatement

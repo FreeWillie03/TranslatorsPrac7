@@ -3,12 +3,9 @@
    2 // Python style for loop
    3 // for1.pav
    4   int i;
-   5   for i in (6, 3, 4, 7, 5, -16, 300) {
-   6     if (i % 5 == 0) break;
-   7     write(i); }
-   8   writeLine();
-   9   bool b;
-  10   for b in (true, false, 3 > 4) write(b);
-  11 }
+   5   for i in (6, 3, 4, 7, 5) {
+   6     write(i); }
+   7  
+   8 }
 
 0 errors detected
