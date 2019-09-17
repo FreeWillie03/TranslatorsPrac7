@@ -112,6 +112,7 @@ TOKENS
   number     = digit { digit } .
   stringLit  = '"' { stringCh | backslash printable } '"' .
   charLit    = "'" ( charCh   | backslash printable ) "'" .
+  char   	 = "'" letter "'" .
 
 PRAGMAS
   DebugOn     = "$D+" .                      (. debug = true; .)
@@ -243,6 +244,7 @@ PRODUCTIONS
   BasicType<out int type>                    (. type = Types.noType; .)
   =   "int"                                  (. type = Types.intType; .)
     | "bool"                                 (. type = Types.boolType; .)
+	| "char"								 (. type = Types.charType; .)
   .
 
 
@@ -257,7 +259,8 @@ PRODUCTIONS
                                                 var.type = type;
                                                 var.offset = frame.size;
                                                 frame.size++; .)
-     [ AssignOp                              (. CodeGen.LoadAddress(var); .)
+     [ AssignOp <out type>
+											 (. CodeGen.LoadAddress(var); .)
        Expression<out expType>               (. if (!Assignable(var.type, expType))
                                                   SemError("incompatible types in assignment");
                                                 CodeGen.Assign(var.type); .)
@@ -272,10 +275,18 @@ PRODUCTIONS
          "(" Arguments<des> ")"              (. CodeGen.Call(des.entry.entryPoint); .)
       |  Designator<out des>                 (. if (des.entry.kind != Kinds.Var)
                                                   SemError("cannot assign to " + Kinds.kindNames[des.entry.kind]); .)
-         AssignOp
+         AssignOp<out type>		  			    
          Expression<out expType>             (. if (!Assignable(des.type, expType))
                                                 SemError("incompatible types in assignment");
-                                                CodeGen.Assign(des.type); .)
+											/*	switch(type){
+													case (Types.charType): CodeGen.Assign(des.type);
+													break;
+													case (Types.intType): CodeGen.Assign();
+													break;
+												 default:
+                                                CodeGen.Assign(des.type); 
+												break;
+												}	*/ CodeGen.Assign(des.typw);.)
      ) WEAK ";"
   .
 
@@ -569,7 +580,7 @@ PRODUCTIONS
      | ">="                                  (. op = CodeGen.cge; .)
   .
 
-  AssignOp = "=" .
+  AssignOp<out int ctype> = "=" ["("BasicType<out type>")"]	(. ctype = type; .) 	
 
   Ident<out string name>
   =  identifier                              (. name = token.val; .)

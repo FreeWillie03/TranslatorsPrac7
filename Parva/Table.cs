@@ -11,13 +11,14 @@ using System;
 namespace Parva {
 
   class Types {
-  // Identifier (and expression) types
-    public const int
-      noType    =  0,             // The numbering is significant, as
-      nullType  =  2,             // array types are denoted by these
-      intType   =  4,             // numbers + 1
-      boolType  =  6,
-      voidType  = 8;
+        // Identifier (and expression) types
+        public const int
+          noType = 0,             // The numbering is significant, as
+          nullType = 2,             // array types are denoted by these
+          intType = 4,             // numbers + 1
+          boolType = 6,
+          voidType = 8,
+          charType = 10;
 
     static List<string> typeNames = new List<string>();
 

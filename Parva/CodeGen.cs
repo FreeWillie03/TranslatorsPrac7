@@ -69,7 +69,9 @@ namespace Parva {
       clt  = 11,
       cge  = 12,
       cgt  = 13,
-      cle  = 14;
+      cle  = 14,
+      intt = 15,
+      charr = 16;
 
     private static void Emit(int word) {
     // Code generator for single word
