@@ -339,6 +339,28 @@ PRODUCTIONS
                                                 loopExit.Here(); stoplabel.Here(); .)
   .
 
+  ForStatement<StackFrame frame>               (. string name; int count = 0;
+                                                int expType; DesType des;Label loopstart  = new Label(!known); Label loopend  = new Label(!known); .)
+  = "for" Ident<out name>                       (. Entry entry = Table.Find(name);
+                                                if (!entry.declared)
+                                                  SemError("undeclared identifier");des = new DesType(entry);
+                                                if (entry.kind == Kinds.Var)
+                                                  CodeGen.LoadAddress(entry); if (des.entry.kind != Kinds.Var)
+                                                  SemError("cannot assign to " + Kinds.kindNames[des.entry.kind]);
+												  CodeGen.LoadConstant(1000); CodeGen.Allocate();CodeGen.Assign(des.type) 
+												  CodeGen.LoadAddress(entry);CodeGen.Dereference();CodeGen.LoadConstant(count);
+												CodeGen.Index(); .) 
+   "in" "(" Expression <out expType>          (. if (!Assignable(des.type, expType))
+                                                SemError("incompatible types in assignment");
+                                                CodeGen.Assign(des.type); .)
+  { "," (.count++;CodeGen.LoadAddress(entry);  CodeGen.LoadAddress(entry);CodeGen.Dereference();CodeGen.LoadConstant(count); CodeGen.Index(); .)
+    Expression  <out expType>              (.  if (!Assignabl.e(des.type, expType))
+                                                SemError("incompatible types in assignment");
+                                                CodeGen.Assign(des.type); .) 
+   } ")"                                        (.  CodeGen.Branch(loopend);loopstart.Here(); .)
+   Statement<frame>                             (. CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here(); .)
+   .                 
+  
   ForStatement<StackFrame frame>               (. string name;
                                                 int expType; DesType des;Label loopstart  = new Label(!known); Label loopend  = new Label(!known); .)
   = "for" Ident<out name>                       (. Entry entry = Table.Find(name);
@@ -350,7 +372,7 @@ PRODUCTIONS
    "in" "(" Expression <out expType>          (. if (!Assignable(des.type, expType))
                                                 SemError("incompatible types in assignment"); 
                                                 CodeGen.Assign(des.type); CodeGen.Branch(loopstart); Label loopback  = new Label(known); .)
-  { "," (.CodeGen.LoadAddress(entry); loopstart = new Label(!known);.)
+  { "," (.CodeGen.LoadAddress(entry); .)
     Expression  <out expType>              (.  if (!Assignable(des.type, expType))
                                                 SemError("incompatible types in assignment");
                                                 CodeGen.Assign(des.type);  CodeGen.Branch(loopstart); .) 
