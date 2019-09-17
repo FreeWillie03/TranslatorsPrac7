@@ -5,12 +5,22 @@ BEGIN
   {    3 } HALT    
   {    4 } DSP      0
   {    6 } LDC      1
-  {    8 } BZE      17
+  {    8 } BZE      38
   {   10 } LDC      1
-  {   12 } PRNI    
-  {   13 } BRN      17
-  {   15 } BRN      6
-  {   17 } LDC      2
-  {   19 } PRNI    
-  {   20 } RETV    
+  {   12 } BZE      26
+  {   14 } LDC      1
+  {   16 } PRNI    
+  {   17 } BRN      26
+  {   19 } LDC      2
+  {   21 } PRNI    
+  {   22 } BRN      26
+  {   24 } BRN      10
+  {   26 } LDC      3
+  {   28 } PRNI    
+  {   29 } BRN      38
+  {   31 } LDC      4
+  {   33 } PRNI    
+  {   34 } BRN      38
+  {   36 } BRN      6
+  {   38 } RETV    
 END.

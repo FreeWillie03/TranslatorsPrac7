@@ -1,0 +1,63 @@
+ASSEM
+BEGIN
+  {    0 } FHDR    
+  {    1 } CALL     4
+  {    3 } HALT    
+  {    4 } DSP      2
+  {    6 } LDA      4
+  {    8 } LDC      6
+  {   10 } STO     
+  {   11 } BRN      44
+  {   13 } LDC      3
+  {   15 } STO     
+  {   16 } BRN      44
+  {   18 } LDC      4
+  {   20 } STO     
+  {   21 } BRN      44
+  {   23 } LDC      7
+  {   25 } STO     
+  {   26 } BRN      44
+  {   28 } LDC      5
+  {   30 } STO     
+  {   31 } BRN      44
+  {   33 } LDC      16
+  {   35 } NEG     
+  {   36 } STO     
+  {   37 } BRN      44
+  {   39 } LDC      300
+  {   41 } STO     
+  {   42 } BRN      44
+  {   44 } BRN      67
+  {   46 } LDA      4
+  {   48 } LDV     
+  {   49 } LDC      5
+  {   51 } REM     
+  {   52 } LDC      0
+  {   54 } CEQ     
+  {   55 } BZE      61
+  {   57 } BRN      -1
+  {   59 } BRN      61
+  {   61 } LDA      4
+  {   63 } LDV     
+  {   64 } PRNI    
+  {   65 } BRN      13
+  {   67 } PRNL    
+  {   68 } LDA      5
+  {   70 } LDC      1
+  {   72 } STO     
+  {   73 } BRN      88
+  {   75 } LDC      0
+  {   77 } STO     
+  {   78 } BRN      88
+  {   80 } LDC      3
+  {   82 } LDC      4
+  {   84 } CGT     
+  {   85 } STO     
+  {   86 } BRN      88
+  {   88 } BRN      96
+  {   90 } LDA      5
+  {   92 } LDV     
+  {   93 } PRNB    
+  {   94 } BRN      75
+  {   96 } RETV    
+END.

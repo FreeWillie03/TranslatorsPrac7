@@ -1,15 +1,14 @@
 
-   1 void Main () { $C+
-   2 // break0.pav
-   3 // Simple break statements
-   4   while (true) {
-   5     write(1);
-   6     break;
-****     ^ "}" expected
-   7     write(2);
-   8     break;
-****     ^ "}" expected
-   9   }
-  10 }
+   1 void Main () { $C+ $D+
+   2 // Python style for loop
+   3 // for1.pav
+   4   int i;
+   5   for i in (6, 3, 4, 7, 5, -16, 300) {
+   6     if (i % 5 == 0) break;
+   7     write(i); }
+   8   writeLine();
+   9   bool b;
+  10   for b in (true, false, 3 > 4) write(b);
+  11 }
 
-2 errors detected
+0 errors detected
