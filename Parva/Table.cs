@@ -79,10 +79,11 @@ namespace Parva {
   // Objects of this type are associated with l-value and r-value designators
     public Entry entry;           // the identifier properties
     public int type;              // designator type (not always the entry type)
-
+    public int kind;
     public DesType(Entry entry) {
       this.entry  = entry;
       this.type   = entry.type;   // may need modification later
+      this.kind = entry.kind;
     } // constructor
 
     public override string ToString() {

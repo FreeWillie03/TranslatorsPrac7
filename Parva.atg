@@ -193,14 +193,13 @@ PRODUCTIONS
             | IfStatement<frame>      (. stoplabel = new Label(!known);  .)
             | WhileStatement<frame>   (. stoplabel = new Label(!known); .)
 			| DoWhileStatement<frame> (. stoplabel = new Label(!known);  .)
-            | ForStatement<frame>      (. stoplabel = new Label(!known);  .)
-			 
+            | ForStatement<frame>      (. stoplabel = new Label(!known);  .) 
 			| HaltStatement
             | ReturnStatement
             | ReadStatement
             | WriteStatement
             |  ";"                              //(. if(empty) SemError("empty statement"); .) 
-			| "break" ";"                         (. if(loop) CodeGen.Branch(stoplabel); else SemError("break not expected"); .)
+			| "break" ";"                         (.  if(loop) CodeGen.Branch(stoplabel); else SemError("break not expected"); .)
           ) .
 
   Block<StackFrame frame>
@@ -340,29 +339,24 @@ PRODUCTIONS
                                                 loopExit.Here(); stoplabel.Here(); .)
   .
 
-ForStatement<StackFrame frame>               (. string name;Entry labelb = new Entry();int count=1;
-                                                int expType; DesType des;Label loopstart  = new Label(!known); Label loopend  = new Label(!known); .)
-  = "for" Ident<out name>                       (. Entry entry = Table.Find(name);
-                                                if (!entry.declared)
-                                                  SemError("undeclared identifier");des = new DesType(entry);
-                                                if (entry.kind == Kinds.Var)
-                                                  CodeGen.LoadAddress(entry); if (des.entry.kind != Kinds.Var)
-                                                  SemError("cannot assign to " + Kinds.kindNames[des.entry.kind]); .)
-   "in" "(" Expression <out expType>          (. if (!Assignable(des.type, expType))
-                                                SemError("incompatible types in assignment"); 
-                                                CodeGen.Assign(des.type); Label loopback  = new Label(known); 
-												CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb); CodeGen.Branch(loopstart); .)
-  { "," (.CodeGen.LoadAddress(entry);count++; .)
-    Expression  <out expType>              (.  if (!Assignable(des.type, expType))
-                                                SemError("incompatible types in assignment");
-                                                CodeGen.Assign(des.type); loopback  = new Label(known);
+    
+  ForStatement<StackFrame frame>               (. loop = true; Label loopstart  = new Label(!known); Label loopend  = new Label(!known); 
+												DesType des; Entry labelb = new Entry();int expType; .)
+  = "for" Designator<out des>                    
+   "in" "(" Expression <out expType>           (. if (!Assignable(expType, des.type))                                
+													SemError("incompatible with control var");
+													CodeGen.Assign(des.type); Label loopback  = new Label(known); 
+												CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb); CodeGen.Branch(loopstart); .) 
+  { ","  (.CodeGen.LoadAddress(des.entry); .)
+  Expression  <out expType>              (. if (!Assignable(expType, des.type))                                
+												SemError("incompatible with control var");
+												CodeGen.Assign(des.type); loopback  = new Label(known);
 												CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb);
-												CodeGen.Branch(loopstart); .) 
+												CodeGen.Branch(loopstart); .)    
    } ")"                                        (.  CodeGen.Branch(loopend);loopstart.Here(); .)
    Statement<frame>                             (.  CodeGen.LoadValue(labelb); CodeGen.LoadConstant(6); CodeGen.addi();
-													CodeGen.ForBranch(); loopend.Here(); stoplabel.Here(); .)
-   .   
-           
+													CodeGen.ForBranch(); loopend.Here();stoplabel.Here(); .)
+   .                        
   
   HaltStatement
  =   "halt"   				(.  CodeGen.LeaveProgram(); .)

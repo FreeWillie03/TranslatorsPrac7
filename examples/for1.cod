@@ -7,57 +7,91 @@ BEGIN
   {    6 } LDA      4
   {    8 } LDC      6
   {   10 } STO     
-  {   11 } BRN      44
-  {   13 } LDC      3
-  {   15 } STO     
-  {   16 } BRN      44
-  {   18 } LDC      4
-  {   20 } STO     
-  {   21 } BRN      44
-  {   23 } LDC      7
-  {   25 } STO     
-  {   26 } BRN      44
-  {   28 } LDC      5
-  {   30 } STO     
-  {   31 } BRN      44
-  {   33 } LDC      16
-  {   35 } NEG     
-  {   36 } STO     
-  {   37 } BRN      44
-  {   39 } LDC      300
-  {   41 } STO     
-  {   42 } BRN      44
-  {   44 } BRN      67
-  {   46 } LDA      4
-  {   48 } LDV     
-  {   49 } LDC      5
-  {   51 } REM     
-  {   52 } LDC      0
-  {   54 } CEQ     
-  {   55 } BZE      61
-  {   57 } BRN      -1
-  {   59 } BRN      61
+  {   11 } LDC      11
+  {   13 } STL      0
+  {   15 } BRN      86
+  {   17 } LDA      4
+  {   19 } LDC      3
+  {   21 } STO     
+  {   22 } LDC      22
+  {   24 } STL      0
+  {   26 } BRN      86
+  {   28 } LDA      4
+  {   30 } LDC      4
+  {   32 } STO     
+  {   33 } LDC      33
+  {   35 } STL      0
+  {   37 } BRN      86
+  {   39 } LDA      4
+  {   41 } LDC      7
+  {   43 } STO     
+  {   44 } LDC      44
+  {   46 } STL      0
+  {   48 } BRN      86
+  {   50 } LDA      4
+  {   52 } LDC      5
+  {   54 } STO     
+  {   55 } LDC      55
+  {   57 } STL      0
+  {   59 } BRN      86
   {   61 } LDA      4
-  {   63 } LDV     
-  {   64 } PRNI    
-  {   65 } BRN      13
-  {   67 } PRNL    
-  {   68 } LDA      5
-  {   70 } LDC      1
-  {   72 } STO     
-  {   73 } BRN      88
-  {   75 } LDC      0
+  {   63 } LDC      16
+  {   65 } NEG     
+  {   66 } STO     
+  {   67 } LDC      67
+  {   69 } STL      0
+  {   71 } BRN      86
+  {   73 } LDA      4
+  {   75 } LDC      300
   {   77 } STO     
-  {   78 } BRN      88
-  {   80 } LDC      3
-  {   82 } LDC      4
-  {   84 } CGT     
-  {   85 } STO     
-  {   86 } BRN      88
-  {   88 } BRN      96
-  {   90 } LDA      5
-  {   92 } LDV     
-  {   93 } PRNB    
-  {   94 } BRN      75
-  {   96 } RETV    
+  {   78 } LDC      78
+  {   80 } STL      0
+  {   82 } BRN      86
+  {   84 } BRN      111
+  {   86 } LDA      4
+  {   88 } LDV     
+  {   89 } LDC      5
+  {   91 } REM     
+  {   92 } LDC      0
+  {   94 } CEQ     
+  {   95 } BZE      101
+  {   97 } BRN      -1
+  {   99 } BRN      101
+  {  101 } LDA      4
+  {  103 } LDV     
+  {  104 } PRNI    
+  {  105 } LDL      0
+  {  107 } LDC      6
+  {  109 } ADD     
+  {  110 } BRNFOR  
+  {  111 } PRNL    
+  {  112 } LDA      5
+  {  114 } LDC      1
+  {  116 } STO     
+  {  117 } LDC      117
+  {  119 } STL      0
+  {  121 } BRN      150
+  {  123 } LDA      5
+  {  125 } LDC      0
+  {  127 } STO     
+  {  128 } LDC      128
+  {  130 } STL      0
+  {  132 } BRN      150
+  {  134 } LDA      5
+  {  136 } LDC      3
+  {  138 } LDC      4
+  {  140 } CGT     
+  {  141 } STO     
+  {  142 } LDC      142
+  {  144 } STL      0
+  {  146 } BRN      150
+  {  148 } BRN      160
+  {  150 } LDA      5
+  {  152 } LDV     
+  {  153 } PRNB    
+  {  154 } LDL      0
+  {  156 } LDC      6
+  {  158 } ADD     
+  {  159 } BRNFOR  
+  {  160 } RETV    
 END.
