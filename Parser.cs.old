@@ -534,7 +534,7 @@ public class Parser {
 	}
 
 	static void ForStatement(StackFrame frame) {
-		string name;
+		string name;Entry labelb = new Entry();int count=1;
 		int expType; DesType des;Label loopstart  = new Label(!known); Label loopend  = new Label(!known);
 		Expect(for_Sym);
 		Ident(out name);
@@ -549,19 +549,23 @@ public class Parser {
 		Expression(out expType);
 		if (!Assignable(des.type, expType))
 		SemError("incompatible types in assignment");
-		CodeGen.Assign(des.type); CodeGen.Branch(loopstart); Label loopback  = new Label(known);
+		CodeGen.Assign(des.type); Label loopback  = new Label(known);
+		CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb); CodeGen.Branch(loopstart);
 		while (la.kind == comma_Sym) {
 			Get();
-			CodeGen.LoadAddress(entry); loopstart = new Label(!known)
+			CodeGen.LoadAddress(entry);count++;
 			Expression(out expType);
 			if (!Assignable(des.type, expType))
 			 SemError("incompatible types in assignment");
-			 CodeGen.Assign(des.type);  CodeGen.Branch(loopstart);
+			 CodeGen.Assign(des.type); loopback  = new Label(known);
+			CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb);
+			CodeGen.Branch(loopstart);
 		}
 		Expect(rparen_Sym);
 		CodeGen.Branch(loopend);loopstart.Here();
 		Statement(frame);
-		CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here();
+		CodeGen.LoadValue(labelb); CodeGen.LoadConstant(6); CodeGen.addi();
+		CodeGen.ForBranch(); loopend.Here(); stoplabel.Here();
 	}
 
 	static void HaltStatement() {

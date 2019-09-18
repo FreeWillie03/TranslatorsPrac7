@@ -117,7 +117,7 @@ namespace Parva {
       stoc    =  88,
       sub     =  89,
       trap    =  90,
-
+      brnFor    = 91,
       nul     = 255;                         // leave gap for future
 
     public static string[] mnemonics = new string[PVM.nul + 1];
@@ -257,6 +257,10 @@ namespace Parva {
       mem[--cpu.sp] = value;
       if (cpu.sp < cpu.hp) ps = badMem;
     } // PVM.Push
+     static void GetatOffset(int value) {
+            // Bumps stack pointer and pushes value onto stack
+            Push(mem[value - cpu.sp]);
+    } // PVM.GetatOffset
 
     static int Pop() {
     // Pops and returns top value on stack and bumps stack pointer
@@ -467,6 +471,7 @@ namespace Parva {
             tos = Pop(); adr = Pop();
             if (InBounds(adr)) mem[adr] = tos;
             break;
+          
           case PVM.stoc:          // character checked store
             tos = Pop(); adr = Pop();
             if (InBounds(adr))
@@ -590,6 +595,11 @@ namespace Parva {
           case PVM.brn:           // unconditional branch
             cpu.pc = Next();
             if (cpu.pc < 0 || cpu.pc >= codeLen) ps = badAdr;
+            break;
+           case PVM.brnFor:
+              tos = Pop(); 
+              cpu.pc = tos;
+              if (cpu.pc < 0 || cpu.pc >= codeLen) ps = badAdr;
             break;
           case PVM.bze:           // pop top of stack, branch if false
             target = Next();
@@ -918,6 +928,7 @@ namespace Parva {
       mnemonics[PVM.stl_4]    = "STL_4";
       mnemonics[PVM.stl_5]    = "STL_5";
       mnemonics[PVM.sto]      = "STO";
+      mnemonics[PVM.brnFor]   = "BRNFOR";
       mnemonics[PVM.stoc]     = "STOC";
       mnemonics[PVM.sub]      = "SUB";
       mnemonics[PVM.trap]     = "TRAP";

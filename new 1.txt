@@ -340,29 +340,42 @@ PRODUCTIONS
                                                 loopExit.Here(); stoplabel.Here(); .)
   .
 
-ForStatement<StackFrame frame>               (. string name;Entry labelb = new Entry();int count=1;
-                                                int expType; DesType des;Label loopstart  = new Label(!known); Label loopend  = new Label(!known); .)
-  = "for" Ident<out name>                       (. Entry entry = Table.Find(name);
-                                                if (!entry.declared)
-                                                  SemError("undeclared identifier");des = new DesType(entry);
-                                                if (entry.kind == Kinds.Var)
-                                                  CodeGen.LoadAddress(entry); if (des.entry.kind != Kinds.Var)
-                                                  SemError("cannot assign to " + Kinds.kindNames[des.entry.kind]); .)
-   "in" "(" Expression <out expType>          (. if (!Assignable(des.type, expType))
-                                                SemError("incompatible types in assignment"); 
-                                                CodeGen.Assign(des.type); Label loopback  = new Label(known); 
-												CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb); CodeGen.Branch(loopstart); .)
-  { "," (.CodeGen.LoadAddress(entry);count++; .)
-    Expression  <out expType>              (.  if (!Assignable(des.type, expType))
-                                                SemError("incompatible types in assignment");
-                                                CodeGen.Assign(des.type); loopback  = new Label(known);
-												CodeGen.LoadConstant(loopback.Address());CodeGen.StoreValue(labelb);
-												CodeGen.Branch(loopstart); .) 
-   } ")"                                        (.  CodeGen.Branch(loopend);loopstart.Here(); .)
-   Statement<frame>                             (.  CodeGen.LoadValue(labelb); CodeGen.LoadConstant(6); CodeGen.addi();
-													CodeGen.ForBranch(); loopend.Here(); stoplabel.Here(); .)
+  ForStatement<StackFrame frame>               (. Label loopend = new Label(!known); DesType des;
+												Label loopstart = new Label(!known);int expType;.)
+  = "for" Designator<out des>                  (. if (IsRef(des.type)        
+												|| des.entry.kind != Entry.Var)                                              
+												SemError("illegal control variable"); .)   
+   "in" "(" Expression <out expType>           (. if (!compatible(expType, des.type))                                
+													SemError("incompatible with control var");Label loopback = new Label(!known)
+													int count=1; CodeGen.Assign(des.type); CodeGen.Branch(loopend); .) 
+  { ","  Expression  <out expType>              (. if (!compatible(expType, des.type))                                
+												SemError("incompatible with control var"); CodeGen.Assign(des.type); CodeGen.Branch(loopend); .)   
+   } ")"                                        
+   Statement<frame>                             (. CodeGen.Branch(loopback); loopend.Here(); stoplabel.Here(); .)
    .   
-           
+   
+   (. CodeGen.Createarrayforloop(array1,count,des.type);LoadConstant(count);CodeGen.StoreValue(count1)
+													int il =count; while(il >0) 
+													{  CodeGen.LoadAddress(entry); 
+													 CodeGen.LoadValue(array1);CodeGen.LoadConstant(il);CodeGen.Index();CodeGen.Dereference();
+													   CodeGen.Assign(des.Type); CodeGen.
+													   il++;}
+													.)
+   
+   
+  ForStatement<StackFrame frame>               (. Label loopExit = new Label(!known); DesType des; Label loopback = new Label(!known);
+												Label loopstart = new Label(!known);int expType;.)
+  = "for" Designator<out des>                  (. if (IsRef(des.type)        
+												|| des.entry.kind != Entry.Var)                                              
+												SemError("illegal control variable"); .)   
+   "in" "(" Expression <out expType>           (. if (!compatible(expType, des.type))                                
+													SemError("incompatible with control var");
+													int count=1; CodeGen.Assign(des.type); CodeGen.Call(loopStart); Loopback.Here();.) 
+  { ","  Expression  <out expType>              (. if (!compatible(expType, des.type))                                
+												SemError("incompatible with control var");count++;.)   
+   } ")"                                        (. loopstart.Here(); CodeGen.Branch(loopExit);
+   Statement<frame>                             (. CodeGen.Call(loopback); loopExit.Here(); stoplabel.Here(); .)
+   .                
   
   HaltStatement
  =   "halt"   				(.  CodeGen.LeaveProgram(); .)

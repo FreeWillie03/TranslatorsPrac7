@@ -190,7 +190,10 @@ namespace Parva {
     // Generates code to index an array on the heap
       Emit(PVM.ldxa);
     } // CodeGen.Index
-
+     public static void addi() {
+    // Generates code to index an array on the heap
+      Emit(PVM.add);
+    } // CodeGen.Index
     public static void Allocate() {
     // Generates code to allocate an array on the heap
       Emit(PVM.anew);
@@ -207,6 +210,7 @@ namespace Parva {
     // given by next-to-top, popping these two elements
       Emit(PVM.sto);
     } // CodeGen.Assign
+   
 
     public static void LoadReturnAddress() {
     // Generates code to push address of function return slot on top of stack.
@@ -242,7 +246,11 @@ namespace Parva {
     // Generates unconditional branch to destination
       Emit(PVM.brn); Emit(destination.Address());
     } // CodeGen.Branch
+    public static void ForBranch() {
+    // Generates unconditional branch to destination
 
+      Emit(PVM.brnFor); 
+    } // CodeGen.Branch
     public static void BranchFalse(Label destination) {
     // Generates branch to destination, conditional on the Boolean
     // value currently on top of the evaluation stack, popping this value
@@ -289,8 +297,9 @@ namespace Parva {
     // Generates code to dump the current state of the evaluation stack
       Emit(PVM.stack);
     } // CodeGen.Stack
-
-    public static void Heap() {
+      
+    
+        public static void Heap() {
     // Generates code to dump the current state of the runtime heap
       Emit(PVM.heap);
     } // CodeGen.Heap
